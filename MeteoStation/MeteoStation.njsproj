@@ -91,6 +91,7 @@
     </Compile>
     <Compile Include="server.js" />
     <None Include="Export.pubxml" />
+    <Content Include="mysql\Dump20180320.sql" />
     <Content Include="package.json" />
     <Content Include="public\js\amcharts\images\dragIcon.gif" />
     <Content Include="public\js\amcharts\images\dragIconBlack.gif" />
@@ -335,6 +336,7 @@
     <Content Include="README.md" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="mysql\" />
     <Folder Include="public\" />
     <Folder Include="public\fonts\" />
     <Folder Include="public\images\" />
