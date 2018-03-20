@@ -1,0 +1,28 @@
+﻿#chartcontainer {
+    width: 80%;
+    height: 500px;
+    position: relative;
+    margin: auto;
+}
+
+#chartdiv, #curtain {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background-color: #343a40;
+    color: #fff;
+}
+
+#curtain {
+    background: #343a40;
+    color: #fff;
+    font-size: 25px;
+}
+
+#curtain span {
+        display: block;
+        position: absolute;
+        top: 49%;
+        width: 100%;
+        text-align: center;
+    }

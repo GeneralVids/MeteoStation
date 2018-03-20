@@ -1,0 +1,28 @@
+﻿table {
+    border: medium solid #212529;
+    border-collapse: collapse;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 2%;
+    height: 20%;
+}
+
+th {
+    border: thin solid #212529;
+    text-align: center;
+    width: 50%;
+    padding: 5px;
+    background-color: #343a40;
+    color: #ffffff;
+}
+
+td {
+    font-family: sans-serif;
+    border: thin solid #212529;
+    width: 50%;
+    padding: 5px;
+    text-align: center;
+    background-color: #343a40;
+    color: #fff;
+}

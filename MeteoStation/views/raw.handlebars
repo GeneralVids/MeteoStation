@@ -1,0 +1,15 @@
+<head>
+    <link rel="stylesheet" href="styles/rawTable.css" />
+</head>
+
+<h2>Données brutes</h2>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script>
+    var allData = {{{result}}};
+</script>
+<script src="js/rawDataTableGen.js"></script>
+
+<body onLoad="buildHtmlTable('#excelDataTable')">
+    <table id="excelDataTable" border="1"></table>
+</body> 
