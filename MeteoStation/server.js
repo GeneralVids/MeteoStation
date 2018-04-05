@@ -41,10 +41,11 @@ function getLastData(callback) {
     );
 }
 //Fonction qui met à jour la mesure "en temps réel" toutes les 5mins
-function updateAllData() {
+function updateAllData(err) {
     console.log("Mise à jour horaire...");
     var scriptPython = require("child_process").spawn; //Permet l'usage de fonction externe
     var scriptProcess = scriptPython('python', ["python/capteur.py"]); //Importe le script python
+    if (err) throw err;
     scriptProcess.stdout.on('result', function (result) {         //Récupère les données sortantes du script python
         var newHum = result.slice(0, scriptProcess.indefOf("S")); //Sépare l'humidité de la température
         var newTemp = result.slice(scriptProcess.indefOf("S") + 1); //Sépare la température de l'humidité
@@ -59,10 +60,11 @@ function updateAllData() {
 }
 
 //Fonction qui met à jour à jour la base de données principale toutes les heures
-function updateLastData() {
+function updateLastData(err) {
     console.log('Mise à jour "temps réel"...');
     var scriptPython = require("child_process").spawn; //Permet l'usage de fonction externe
     var scriptProcess = scriptPython('python', ["python/capteur.py"]); //Importe le script python
+    if (err) throw err;
     scriptProcess.stdout.on('result', function (result) {         //Récupère les données sortantes du script python
         var newHum = result.slice(0, scriptProcess.indefOf("S")); //Sépare l'humidité de la température
         var newTemp = result.slice(scriptProcess.indefOf("S") + 1); //Sépare la température de l'humidité
