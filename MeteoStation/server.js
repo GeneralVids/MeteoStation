@@ -63,9 +63,9 @@ function updateLastData(err) {
     console.log('Mise à jour "temps réel"...');
     var spawn = require("child_process").spawn; //Permet l'usage de fonction externe
     var scriptProcess = spawn('python', ["/home/pi/MeteoStation/MeteoStation/python/capteur.py"]); //Importe le script python
-    scriptProcess.stdout.on('result', function (result) {         //Récupère les données sortantes du script python
-        var newHum = result.slice(0, scriptProcess.indefOf("S")); //Sépare l'humidité de la température
-        var newTemp = result.slice(scriptProcess.indefOf("S") + 1); //Sépare la température de l'humidité
+    scriptProcess.stdout.on('data', function (data) {         //Récupère les données sortantes du script python
+        var newHum = data.slice(0, scriptProcess.indefOf("S")); //Sépare l'humidité de la température
+        var newTemp = data.slice(scriptProcess.indefOf("S") + 1); //Sépare la température de l'humidité
         console.log("Dernière mesure temps réel :" + newTemp + "°C " + newHum + "%");
         var sql = "UPDATE lastmesure SET (NOW(),?) LIMIT 1";
         var values = [newTemp, newHum];
@@ -77,7 +77,7 @@ function updateLastData(err) {
 }
 
 setInterval(updateAllData, 18000000); //La base de données principale est mise à jour toute les heures (18x10^6 ms soit 1h)
-setInterval(updateLastData, 20000); //La base de données "en temps réel" est mise à jour toutes les 5 minutes (300000 ms soit 5min)
+setInterval(updateLastData, 2000); //La base de données "en temps réel" est mise à jour toutes les 5 minutes (300000 ms soit 5min)
 
 //Configuration de la structure du site
 app.get('/', function (req, res) {
