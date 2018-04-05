@@ -41,7 +41,7 @@ function getLastData(callback) {
     );
 }
 //Fonction qui met à jour la mesure "en temps réel" toutes les 5mins
-function updateAllData(err) {
+function updateAllData(callback) {
     console.log('Mise à jour horaire...');
     var spawn = require("child_process").spawn; //Permet l'usage de fonction externe
     var scriptProcess = spawn('python', ["/home/pi/MeteoStation/MeteoStation/python/capteur.py"]); //Importe le script python
@@ -51,14 +51,15 @@ function updateAllData(err) {
         console.log("Dernière mesure horaire :" + newTemp + "°C " + newHum + "%");
         var sql = "INSERT INTO mesures (temperature, humidity) VALUES ?";            //Préparation de la requête MySQL
         var values = [newTemp, newHum];                             //Préparation des valeurs de la requête MySQL
-        con.query(sql, [values], function (result) {           //Envoi de la requête
+        con.query(sql, [values], function (err, result) {           //Envoi de la requête
+            if (err) throw err;
             console.log("Number of records inserted: " + result.affectedRows);
         });
     });
 }
 
 //Fonction qui met à jour à jour la base de données principale toutes les heures
-function updateLastData(err) {
+function updateLastData(callback) {
     console.log('Mise à jour "temps réel"...');
     var spawn = require("child_process").spawn; //Permet l'usage de fonction externe
     var scriptProcess = spawn('python', ["/home/pi/MeteoStation/MeteoStation/python/capteur.py"]); //Importe le script python
@@ -73,7 +74,8 @@ function updateLastData(err) {
         );
         var sql = "INSERT INTO lastmesure (temperature, humidity) VALUES ?";
         var values = [newTemp, newHum];
-        con.query(sql, [values], function (result) {
+        con.query(sql, [values], function (err, result) {
+            if (err) throw err;
             console.log("Number of records inserted: " + result.affectedRows);
         });
     });
