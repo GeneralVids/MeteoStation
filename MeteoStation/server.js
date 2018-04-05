@@ -42,6 +42,7 @@ function getLastData(callback) {
 }
 //Fonction qui met à jour la mesure "en temps réel" toutes les 5mins
 function updateAllData() {
+    console.log("Mise à jour horaire...");
     var scriptPython = require("child_process").spawn; //Permet l'usage de fonction externe
     var scriptProcess = scriptPython('python', ["python/capteur.py"]); //Importe le script python
     scriptProcess.stdout.on('result', function (result) {         //Récupère les données sortantes du script python
@@ -59,6 +60,7 @@ function updateAllData() {
 
 //Fonction qui met à jour à jour la base de données principale toutes les heures
 function updateLastData() {
+    console.log('Mise à jour "temps réel"...');
     var scriptPython = require("child_process").spawn; //Permet l'usage de fonction externe
     var scriptProcess = scriptPython('python', ["python/capteur.py"]); //Importe le script python
     scriptProcess.stdout.on('result', function (result) {         //Récupère les données sortantes du script python
@@ -73,6 +75,7 @@ function updateLastData() {
         });
     });
 }
+
 setInterval(updateAllData, 18000000); //La base de données principale est mise à jour toute les heures (18x10^6 ms soit 1h)
 setInterval(updateLastData, 300000); //La base de données "en temps réel" est mise à jour toutes les 5 minutes (300000 ms soit 5min)
 
