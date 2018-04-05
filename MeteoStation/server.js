@@ -67,11 +67,11 @@ function updateLastData(callback) {
         var newHum = parseFloat(data.slice(0, data.indexOf("S"))); //Sépare l'humidité de la température
         var newTemp = parseFloat(data.slice(data.indexOf("S") + 1)); //Sépare la température de l'humidité
         console.log("Dernière mesure temps réel :" + newTemp + "°C " + newHum + "%");
-        con.query("DELETE * FROM lastmesure",
-            function (err, result) {
-                callback(err, result);
-            }
-        );
+        var sql = "DELETE * FROM lastmesure";
+        con.query(sql, [values], function (err, result) {
+            if (err) throw err;
+            console.log("Number of records deleted: " + result.affectedRows);
+        });
         var sql = "INSERT INTO lastmesure (temperature, humidity) VALUES ?";
         var values = [newTemp, newHum];
         con.query(sql, [values], function (err, result) {
