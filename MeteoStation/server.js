@@ -77,7 +77,7 @@ function updateLastData() {
 }
 
 setInterval(updateAllData, 18000000); //La base de données principale est mise à jour toute les heures (18x10^6 ms soit 1h)
-setInterval(updateLastData, 100000); //La base de données "en temps réel" est mise à jour toutes les 5 minutes (300000 ms soit 5min)
+setInterval(updateLastData, 20000); //La base de données "en temps réel" est mise à jour toutes les 5 minutes (300000 ms soit 5min)
 
 //Configuration de la structure du site
 app.get('/', function (req, res) {
