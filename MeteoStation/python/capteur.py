@@ -7,11 +7,9 @@ import DHT22
 import sys
 from time import sleep
 
-
 pi = pigpio.pi()
 dht22 = DHT22.sensor(pi,22)
 dht22.trigger()
-
 
 def readDHT22() :
     dht22.trigger()
@@ -22,10 +20,6 @@ def readDHT22() :
 humidity , temperature = readDHT22()
 while float(humidity) < 0:
     humidity , temperature = readDHT22()
-    
-    print("L'Humidité est de : " + humidity + "%")
-    print("La temperature est de : " + temperature + "C")
-    print(" ")
     sleep(3)
 
 result = humidity + "S" + temperature
