@@ -42,11 +42,12 @@ function getLastData(callback) {
 }
 //Fonction qui met à jour la mesure "en temps réel" toutes les 5mins
 function updateAllData() {
-    var scriptPython = require("child_process").scriptPython; //Permet l'usage de fonction externe
+    var scriptPython = require("child_process").spawn; //Permet l'usage de fonction externe
     var scriptProcess = scriptPython('python', ["python/capteur.py"]); //Importe le script python
     scriptProcess.stdout.on('result', function (result) {         //Récupère les données sortantes du script python
         var newHum = result.slice(0, scriptProcess.indefOf("S")); //Sépare l'humidité de la température
         var newTemp = result.slice(scriptProcess.indefOf("S") + 1); //Sépare la température de l'humidité
+        console.log("Dernière mesure horaire :" + newTemp + "°C " + newHum + "%");
         var sql = "INSERT INTO mesures VALUES (NOW(),?";            //Préparation de la requête MySQL
         var values = [newTemp, newHum];                             //Préparation des valeurs de la requête MySQL
         con.query(sql, [values], function (err, result) {           //Envoi de la requête
@@ -58,11 +59,12 @@ function updateAllData() {
 
 //Fonction qui met à jour à jour la base de données principale toutes les heures
 function updateLastData() {
-    var scriptPython = require("child_process").scriptPython; //Permet l'usage de fonction externe
+    var scriptPython = require("child_process").spawn; //Permet l'usage de fonction externe
     var scriptProcess = scriptPython('python', ["python/capteur.py"]); //Importe le script python
     scriptProcess.stdout.on('result', function (result) {         //Récupère les données sortantes du script python
         var newHum = result.slice(0, scriptProcess.indefOf("S")); //Sépare l'humidité de la température
         var newTemp = result.slice(scriptProcess.indefOf("S") + 1); //Sépare la température de l'humidité
+        console.log("Dernière mesure temps réel :" + newTemp + "°C " + newHum + "%");
         var sql = "UPDATE lastmesure SET (NOW(),?) LIMIT 1";
         var values = [newTemp, newHum];
         con.query(sql, [values], function (err, result) {
