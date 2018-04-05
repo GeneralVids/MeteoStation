@@ -72,7 +72,7 @@ function updateLastData(callback) {
             if (err) throw err;
             console.log("Number of records deleted: " + result.affectedRows);
         });
-        var sql = "INSERT INTO lastmesure (temperature, humidity) VALUES ?";
+        var sql = "INSERT INTO lastmesure (temperature, humidity) VALUES (?)";
         var values = [newTemp, newHum];
         con.query(sql, [values], function (err, result) {
             if (err) throw err;
