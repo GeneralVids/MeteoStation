@@ -42,12 +42,12 @@ function getLastData(callback) {
 }
 //Fonction qui met à jour la mesure "en temps réel" toutes les 5mins
 function updateAllData(err) {
-    console.log('Mise à jour "temps réel"...');
+    console.log('Mise à jour horaire...');
     var spawn = require("child_process").spawn; //Permet l'usage de fonction externe
     var scriptProcess = spawn('python', ["/home/pi/MeteoStation/MeteoStation/python/capteur.py"]); //Importe le script python
-    scriptProcess.stdout.on('result', function (result) {         //Récupère les données sortantes du script python
-        var newHum = result.slice(0, scriptProcess.indefOf("S")); //Sépare l'humidité de la température
-        var newTemp = result.slice(scriptProcess.indefOf("S") + 1); //Sépare la température de l'humidité
+    scriptProcess.stdout.on('data', function (data) {         //Récupère les données sortantes du script python
+        var newHum = data.slice(0, data.indexOf("S")); //Sépare l'humidité de la température
+        var newTemp = data.slice(data.indexOf("S") + 1); //Sépare la température de l'humidité
         console.log("Dernière mesure horaire :" + newTemp + "°C " + newHum + "%");
         var sql = "INSERT INTO mesures VALUES (NOW(),?";            //Préparation de la requête MySQL
         var values = [newTemp, newHum];                             //Préparation des valeurs de la requête MySQL
@@ -64,8 +64,8 @@ function updateLastData(err) {
     var spawn = require("child_process").spawn; //Permet l'usage de fonction externe
     var scriptProcess = spawn('python', ["/home/pi/MeteoStation/MeteoStation/python/capteur.py"]); //Importe le script python
     scriptProcess.stdout.on('data', function (data) {         //Récupère les données sortantes du script python
-        var newHum = data.slice(0, scriptProcess.indefOf("S")); //Sépare l'humidité de la température
-        var newTemp = data.slice(scriptProcess.indefOf("S") + 1); //Sépare la température de l'humidité
+        var newHum = data.slice(0, data.indexOf("S")); //Sépare l'humidité de la température
+        var newTemp = data.slice(data.indexOf("S") + 1); //Sépare la température de l'humidité
         console.log("Dernière mesure temps réel :" + newTemp + "°C " + newHum + "%");
         var sql = "UPDATE lastmesure SET (NOW(),?) LIMIT 1";
         var values = [newTemp, newHum];
