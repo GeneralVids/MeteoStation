@@ -5,6 +5,7 @@ var path = require('path');
 var express = require('express');
 var exphbs = require('express-handlebars');
 var mysql = require('mysql');
+var PythonShell = require('python-shell');
 
 //Framework express
 var app = express(); //Création de l'objet express
@@ -41,12 +42,14 @@ function getLastData(callback) {
     );
 }
 //Fonction qui met à jour la mesure "en temps réel" toutes les 5mins
-function updateAllData(err) {
+function updateAllData() {
     console.log("Mise à jour horaire...");
-    var scriptPython = require("child_process").spawn; //Permet l'usage de fonction externe
-    var scriptProcess = scriptPython('python', ["python/capteur.py"]); //Importe le script python
-    if (err) throw err;
-    scriptProcess.stdout.on('result', function (result) {         //Récupère les données sortantes du script python
+    var options = {
+        mode: 'text',
+        pythonPath: 'python/',
+    }
+    PythonShell.run('capteur.py', options, function (err, result) {  //Execute et récupère les données sortantes du script python
+        if (err) throw err;
         var newHum = result.slice(0, scriptProcess.indefOf("S")); //Sépare l'humidité de la température
         var newTemp = result.slice(scriptProcess.indefOf("S") + 1); //Sépare la température de l'humidité
         console.log("Dernière mesure horaire :" + newTemp + "°C " + newHum + "%");
@@ -60,12 +63,14 @@ function updateAllData(err) {
 }
 
 //Fonction qui met à jour à jour la base de données principale toutes les heures
-function updateLastData(err) {
+function updateLastData() {
     console.log('Mise à jour "temps réel"...');
-    var scriptPython = require("child_process").spawn; //Permet l'usage de fonction externe
-    var scriptProcess = scriptPython('python', ["python/capteur.py"]); //Importe le script python
-    if (err) throw err;
-    scriptProcess.stdout.on('result', function (result) {         //Récupère les données sortantes du script python
+    var options = {
+        mode: 'text',
+        pythonPath: 'python/',
+    }
+    PythonShell.run('capteur.py', options, function (err, result) {  //Execute et récupère les données sortantes du script python
+        if (err) throw err;
         var newHum = result.slice(0, scriptProcess.indefOf("S")); //Sépare l'humidité de la température
         var newTemp = result.slice(scriptProcess.indefOf("S") + 1); //Sépare la température de l'humidité
         console.log("Dernière mesure temps réel :" + newTemp + "°C " + newHum + "%");
@@ -79,7 +84,7 @@ function updateLastData(err) {
 }
 
 setInterval(updateAllData, 18000000); //La base de données principale est mise à jour toute les heures (18x10^6 ms soit 1h)
-setInterval(updateLastData, 20000); //La base de données "en temps réel" est mise à jour toutes les 5 minutes (300000 ms soit 5min)
+setInterval(updateLastData, 2000); //La base de données "en temps réel" est mise à jour toutes les 5 minutes (300000 ms soit 5min)
 
 //Configuration de la structure du site
 app.get('/', function (req, res) {
