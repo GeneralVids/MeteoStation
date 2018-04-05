@@ -67,7 +67,7 @@ function updateLastData(callback) {
         var newHum = parseFloat(data.slice(0, data.indexOf("S"))); //Sépare l'humidité de la température
         var newTemp = parseFloat(data.slice(data.indexOf("S") + 1)); //Sépare la température de l'humidité
         console.log("Dernière mesure temps réel :" + newTemp + "°C " + newHum + "%");
-        var sql = "DELETE * FROM lastmesure";
+        var sql = "DELETE FROM lastmesure";
         con.query(sql, [values], function (err, result) {
             if (err) throw err;
             console.log("Number of records deleted: " + result.affectedRows);
@@ -82,7 +82,7 @@ function updateLastData(callback) {
 }
 
 setInterval(updateAllData, 18000000); //La base de données principale est mise à jour toute les heures (18x10^6 ms soit 1h)
-setInterval(updateLastData, 2000); //La base de données "en temps réel" est mise à jour toutes les 5 minutes (300000 ms soit 5min)
+setInterval(updateLastData, 300000); //La base de données "en temps réel" est mise à jour toutes les 5 minutes (300000 ms soit 5min)
 
 //Configuration de la structure du site
 app.get('/', function (req, res) {
