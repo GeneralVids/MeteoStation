@@ -1653,7 +1653,6 @@ var utf8read = function utf8reada(orig) {
 	return out;
 };
 
-
 if(has_buf) {
 	var utf8readb = function utf8readb(data) {
 		var out = new Buffer(2*data.length), w, i, j = 1, k = 0, ww=0, c;
@@ -2305,7 +2304,6 @@ function write_XLSBCell(cell, o) {
 	return o;
 }
 
-
 /* [MS-XLSB] 2.5.21 */
 var parse_XLSBCodeName = parse_XLWideString;
 var write_XLSBCodeName = write_XLWideString;
@@ -2330,7 +2328,6 @@ var write_XLNameWideString = write_XLWideString;
 var parse_RelID = parse_XLNullableWideString;
 var write_RelID = write_XLNullableWideString;
 
-
 /* [MS-XLSB] 2.5.122 */
 /* [MS-XLS] 2.5.217 */
 function parse_RkNumber(data) {
@@ -2349,7 +2346,6 @@ function write_RkNumber(data, o) {
 	if(fInt) o.write_shift(-4, ((fX100 ? d100 : data) << 2) + (fX100 + 2));
 	else throw new Error("unsupported RkNumber " + data); // TODO
 }
-
 
 /* [MS-XLSB] 2.5.117 RfX */
 function parse_RfX(data) {
@@ -3549,7 +3545,6 @@ function parse_lpwstr(blob, type, pad) {
 	return str;
 }
 
-
 /* [MS-OSHARED] 2.3.3.1.11 VtString */
 /* [MS-OSHARED] 2.3.3.1.12 VtUnalignedString */
 function parse_VtStringBase(blob, stringType, pad) {
@@ -3794,7 +3789,6 @@ function parse_PropertySetStream(file, PIDSI) {
 	return rval;
 }
 
-
 function parsenoop2(blob, length) { blob.read_shift(length); return null; }
 
 function parslurp(blob, length, cb) {
@@ -3962,7 +3956,6 @@ function parse_LongRGBA(blob, length) { var r = blob.read_shift(1), g = blob.rea
 /* 2.5.177 LongRGB */
 function parse_LongRGB(blob, length) { var x = parse_LongRGBA(blob, length); x[3] = 0; return x; }
 
-
 /* --- MS-XLS --- */
 
 /* 2.5.19 */
@@ -3980,8 +3973,6 @@ function parse_frtHeader(blob) {
 	blob.l += 8;
 	return {type: rt, flags: flags};
 }
-
-
 
 function parse_OptXLUnicodeString(blob, length, opts) { return length === 0 ? "" : parse_XLUnicodeString2(blob, length, opts); }
 
@@ -4122,7 +4113,6 @@ function parse_BOF(blob, length) {
 	return o;
 }
 
-
 /* 2.4.146 */
 function parse_InterfaceHdr(blob, length) {
 	if(length === 0) return 0x04b0;
@@ -4130,7 +4120,6 @@ function parse_InterfaceHdr(blob, length) {
 	if((q=blob.read_shift(2))!==0x04b0){/* empty */}
 	return 0x04b0;
 }
-
 
 /* 2.4.349 */
 function parse_WriteAccess(blob, length, opts) {
@@ -4178,7 +4167,6 @@ function parse_ExtSST(blob, length) {
 	return extsst;
 }
 
-
 /* 2.4.221 TODO: check BIFF2-4 */
 function parse_Row(blob, length) {
 	var z = ({});
@@ -4194,7 +4182,6 @@ function parse_Row(blob, length) {
 	return z;
 }
 
-
 /* 2.4.125 */
 function parse_ForceFullCalculation(blob, length) {
 	var header = parse_frtHeader(blob);
@@ -4203,10 +4190,7 @@ function parse_ForceFullCalculation(blob, length) {
 	return fullcalc !== 0x0;
 }
 
-
 var parse_CompressPictures = parsenoop2; /* 2.4.55 Not interesting */
-
-
 
 /* 2.4.215 rt */
 function parse_RecalcId(blob, length) {
@@ -4753,7 +4737,6 @@ var parse_UsesELFs = parsebool; /* 2.4.337 -- should be 0 */
 var parse_VCenter = parsebool; /* 2.4.342 */
 var parse_WinProtect = parsebool; /* 2.4.347 */
 var parse_WriteProtect = parsenoop; /* 2.4.350 empty record */
-
 
 /* ---- */
 var parse_VerticalPageBreaks = parsenoop;
@@ -6462,9 +6445,6 @@ function parse_EncInfoExt(blob, vers) { throw new Error("File is password-protec
 /* [MS-OFFCRYPTO] 2.3.4.10 EncryptionInfo Stream (Agile Encryption) */
 function parse_EncInfoAgl(blob, vers) { throw new Error("File is password-protected: ECMA-376 Agile"); }
 
-
-
-
 /* [MS-OFFCRYPTO] 2.3.5.1 RC4 CryptoAPI Encryption Header */
 function parse_RC4CryptoHeader(blob, length) {
 	var o = {};
@@ -6612,7 +6592,6 @@ function parse_FilePass(blob, length, opts) {
 	else parse_XORObfuscation(blob, length-2, opts, o);
 	return o;
 }
-
 
 function hex2RGB(h) {
 	var o = h.substr(h[0]==="#"?1:0,6);
@@ -8125,7 +8104,6 @@ function parse_comments_bin(data, opts) {
 			case 0x0025: /* 'BrtACBegin' */ break;
 			case 0x0026: /* 'BrtACEnd' */ break;
 
-
 			default:
 				if((R_n||"").indexOf("Begin") > 0){/* empty */}
 				else if((R_n||"").indexOf("End") > 0){/* empty */}
@@ -8442,7 +8420,6 @@ function parse_PtgRef3d(blob, length, opts) {
 	return [type, ixti, loc];
 }
 
-
 /* 2.5.198.62 TODO */
 function parse_PtgFunc(blob, length, opts) {
 	var ptg = blob[blob.l] & 0x1F;
@@ -8596,7 +8573,6 @@ function parse_PtgMemFunc(blob, length, opts) {
 	var cce = blob.read_shift(opts && opts.biff == 2 ? 1 : 2);
 	return [type, cce];
 }
-
 
 /* 2.5.198.86 */
 function parse_PtgRefErr(blob, length, opts) {
@@ -8979,7 +8955,6 @@ function stringify_formula(formula/*Array<any>*/, range, cell, supbooks, opts) {
 				break;
 			case 'PtgAttrIfError': /* [MS-XLSB] 2.5.97.28 */
 				break;
-
 
 			case 'PtgRef': /* 2.5.198.84 */
 				type = f[1][0]; c = shift_cell_xls((f[1][1]), _range, opts);
@@ -11203,7 +11178,6 @@ function write_BrtCellBlank(cell, ncell, o) {
 	return write_XLSBCell(ncell, o);
 }
 
-
 /* [MS-XLSB] 2.4.304 BrtCellBool */
 function parse_BrtCellBool(data, length) {
 	var cell = parse_XLSBCell(data);
@@ -11262,7 +11236,6 @@ function write_BrtCellRk(cell, ncell, o) {
 	write_RkNumber(cell.v, o);
 	return o;
 }
-
 
 /* [MS-XLSB] 2.4.314 BrtCellSt */
 function parse_BrtCellSt(data, length) {
@@ -11999,7 +11972,6 @@ function parse_cs_bin(data, opts, rels, wb, themes, styles) {
 	var pass = false;
 	recordhopper(data, function cs_parse(val, R_n, RT) {
 		switch(RT) {
-
 			case 0x0226: /* 'BrtDrawing' */
 				s['!rel'] = val; break;
 
@@ -15882,7 +15854,6 @@ var XLSRecordEnum = {
 0x7262: {}
 };
 
-
 /* BIFF2-4 single-sheet workbooks */
 function write_biff_rec(ba, t, payload, length) {
 	var len = (length || (payload||[]).length);
@@ -16138,7 +16109,6 @@ function table_to_book(table, opts) {
 }
 /* OpenDocument */
 var parse_content_xml = (function() {
-
 	var parse_text_p = function(text, tag) {
 		return unescapexml(text.replace(/<text:s\/>/g," ").replace(/<[^>]*>/g,""));
 	};
@@ -16180,7 +16150,6 @@ var parse_content_xml = (function() {
 		xlmlregex.lastIndex = 0;
 		str = str.replace(/<!--([^\u2603]*?)-->/mg,"").replace(/<!DOCTYPE[^\[]*\[[^\]]*\]>/gm,"");
 		while((Rn = xlmlregex.exec(str))) switch((Rn[3]=Rn[3].replace(/_.*$/,""))) {
-
 			case 'table': case '工作表': // 9.1.2 <table:table>
 				if(Rn[1]==='/') {
 					if(range.e.c >= range.s.c && range.e.r >= range.s.r) ws['!ref'] = encode_range(range);
@@ -16831,7 +16800,6 @@ var fix_read_opts = fix_opts_func([
 	['password',''], /* password */
 	['WTF', false] /* WTF mode (throws errors) */
 ]);
-
 
 var fix_write_opts = fix_opts_func([
 	['cellDates', false], /* write date cells with type `d` */

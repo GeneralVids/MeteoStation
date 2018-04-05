@@ -1,7 +1,7 @@
 ﻿var chart = AmCharts.makeChart("chartdiv", {
     "theme": "dark",
     "type": "gauge",
-    "language" : "fr",
+    "language": "fr",
     "axes": [{
         "id": "humidity",
         "axisColor": "#67b7dc",

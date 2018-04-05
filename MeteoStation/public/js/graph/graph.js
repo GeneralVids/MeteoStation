@@ -47,7 +47,7 @@ var chart = AmCharts.makeChart("chartdiv", {
         "title": "Humidité",
         "valueField": "humidity",
         //"type": "smoothedLine",
-            "type": "line",
+        "type": "line",
         "fillAlphas": 0
     }],
     "chartScrollbar": {

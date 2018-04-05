@@ -1,4 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 
   <head>
@@ -76,7 +76,6 @@
         $('#dims').html(container.width()+'x'+container.height()+'px');
     }
     </script>
-
   </head>
 
   <body>
@@ -87,8 +86,8 @@
       <input type="button" value="h+" onclick="resize('h', 50);" />
       <select id="type" onchange="setType(this.options[this.selectedIndex].value);">
         <option value="pie1.html" selected="selected">Pie #1 (Simple w/ legend)</option>
-        <option value="pie2.html"/>Pie #2 (3D w/ legend)</option>
-        <option value="pie3.html"/>Pie #3 (several instances)</option>
+        <option value="pie2.html" />Pie #2 (3D w/ legend)</option>
+        <option value="pie3.html" />Pie #3 (several instances)</option>
         <option value="serial1.html">Serial #1 (Area)</option>
         <option value="serial2.html">Serial #2 (Bar &amp; Line)</option>
         <option value="serial3.html">Serial #3 (Line w/ zoom)</option>
@@ -108,5 +107,4 @@
       <iframe id="iframe" src="pie1.html" sytle="border: none; width: 100%; height: 100%;" frameborder="0"></iframe>
     </div>
   </body>
-
 </html>
