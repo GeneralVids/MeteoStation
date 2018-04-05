@@ -65,6 +65,7 @@ function updateLastData(err) {
     var scriptProcess = spawn('python', ["/home/pi/MeteoStation/MeteoStation/python/capteur.py"]); //Importe le script python
     scriptProcess.stdout.on('data', function (data) {         //Récupère les données sortantes du script python
         var newHum = parseFloat(data.slice(0, data.indexOf("S"))); //Sépare l'humidité de la température
+        var newTemp = parseFloat(data.slice(data.indexOf("S") + 1)); //Sépare la température de l'humidité
         console.log("Dernière mesure temps réel :" + newTemp + "°C " + newHum + "%");
         var sql = "UPDATE lastmesure SET (temperature, humidity) VALUES ? LIMIT 1";
         var values = [newTemp, newHum];
