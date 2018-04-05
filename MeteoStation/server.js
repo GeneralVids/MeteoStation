@@ -51,8 +51,7 @@ function updateAllData(err) {
         console.log("Dernière mesure horaire :" + newTemp + "°C " + newHum + "%");
         var sql = "INSERT INTO mesures (temperature, humidity) VALUES ?";            //Préparation de la requête MySQL
         var values = [newTemp, newHum];                             //Préparation des valeurs de la requête MySQL
-        con.query(sql, [values], function (err, result) {           //Envoi de la requête
-            if (err) throw err;
+        con.query(sql, [values], function (result) {           //Envoi de la requête
             console.log("Number of records inserted: " + result.affectedRows);
         });
     });
@@ -67,7 +66,6 @@ function updateLastData(err) {
         var newHum = parseFloat(data.slice(0, data.indexOf("S"))); //Sépare l'humidité de la température
         var newTemp = parseFloat(data.slice(data.indexOf("S") + 1)); //Sépare la température de l'humidité
         console.log("Dernière mesure temps réel :" + newTemp + "°C " + newHum + "%");
-
         con.query("DELETE * FROM lastmesure",
             function (err, result) {
                 callback(err, result);
@@ -75,8 +73,7 @@ function updateLastData(err) {
         );
         var sql = "INSERT INTO lastmesure (temperature, humidity) VALUES ?";
         var values = [newTemp, newHum];
-        con.query(sql, [values], function (err, result) {
-            if (err) throw err;
+        con.query(sql, [values], function (result) {
             console.log("Number of records inserted: " + result.affectedRows);
         });
     });
