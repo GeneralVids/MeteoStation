@@ -1,4 +1,4 @@
-//Requirements
+ï»¿//Requirements
 var http = require('http');
 var url = require('url');
 var path = require('path');
@@ -7,14 +7,14 @@ var exphbs = require('express-handlebars');
 var mysql = require('mysql');
 
 //Framework express
-var app = express(); //Création de l'objet express
+var app = express(); //CrÃ©ation de l'objet express
 app.set('views', path.join(__dirname, 'views')); //Configuration du dossier contenant les pages
-app.engine('handlebars', exphbs({ defaultLayout: 'main' })); //Configuration du template par défaut
+app.engine('handlebars', exphbs({ defaultLayout: 'main' })); //Configuration du template par dÃ©faut
 app.set('view engine', 'handlebars'); //Configuration du framework handlebars
 app.set('port', process.env.PORT || 8080); //Configuration du port
 app.use(express.static(path.join(__dirname, 'public'))); //Configuration du dossier public
 
-//Connexion à la base de données
+//Connexion Ã  la base de donnÃ©es
 var con = mysql.createConnection({
     host: "localhost",
     user: "nodejs",
@@ -23,8 +23,8 @@ var con = mysql.createConnection({
     port: 3306
 });
 
-//Définition des fonctions de récupération des données de la base
-//Requête pour récupérer toute la table
+//DÃ©finition des fonctions de rÃ©cupÃ©ration des donnÃ©es de la base
+//RequÃªte pour rÃ©cupÃ©rer toute la table
 function getAllData(callback) {
     con.query("SELECT * FROM mesures ORDER BY dateAndTime",
         function (err, result) {
@@ -32,7 +32,7 @@ function getAllData(callback) {
         }
     );
 }
-//Requête pour récupérer la dernière mesure
+//RequÃªte pour rÃ©cupÃ©rer la derniÃ¨re mesure
 function getLastData(callback) {
     con.query("SELECT * FROM lastmesure ORDER BY dateAndTime",
         function (err, result) {
@@ -40,61 +40,61 @@ function getLastData(callback) {
         }
     );
 }
-//Fonction qui met à jour la mesure "en temps réel" toutes les 5mins
+//Fonction qui met Ã  jour la mesure "en temps rÃ©el" toutes les 5mins
 function updateAllData(callback) {
-    console.log('Mise à jour horaire...');
+    console.log('Mise Ã  jour horaire...');
     var spawn = require("child_process").spawn; //Permet l'usage de fonction externe
     var scriptProcess = spawn('python', ["/home/pi/MeteoStation/MeteoStation/python/capteur.py"]); //Importe le script python
-    scriptProcess.stdout.on('data', function (data) {         //Récupère les données sortantes du script python
-        var newHum = parseFloat(data.slice(0, data.indexOf("S"))); //Sépare l'humidité de la température
-        var newTemp = parseFloat(data.slice(data.indexOf("S") + 1)); //Sépare la température de l'humidité
-        console.log("Dernière mesure horaire :" + newTemp + "°C " + newHum + "%");
-        var sql = "INSERT INTO mesures (temperature, humidity) VALUES (?)";            //Préparation de la requête MySQL
-        var values = [newTemp, newHum];                             //Préparation des valeurs de la requête MySQL
-        con.query(sql, [values], function (err, result) {           //Envoi de la requête
+    scriptProcess.stdout.on('data', function (data) {         //RÃ©cupÃ¨re les donnÃ©es sortantes du script python
+        var newHum = parseFloat(data.slice(0, data.indexOf("S"))); //SÃ©pare l'humiditÃ© de la tempÃ©rature
+        var newTemp = parseFloat(data.slice(data.indexOf("S") + 1)); //SÃ©pare la tempÃ©rature de l'humiditÃ©
+        console.log("DerniÃ¨re mesure horaire :" + newTemp + "Â°C " + newHum + "%");
+        var sql = "INSERT INTO mesures (temperature, humidity) VALUES (?)";            //PrÃ©paration de la requÃªte MySQL
+        var values = [newTemp, newHum];                             //PrÃ©paration des valeurs de la requÃªte MySQL
+        con.query(sql, [values], function (err, result) {           //Envoi de la requÃªte
             if (err) throw err;
-            console.log("Number of records inserted: " + result.affectedRows);
+            console.log("Nombre de valeurs insÃ©rÃ©es: " + result.affectedRows);
         });
     });
 }
 
-//Fonction qui met à jour à jour la base de données principale toutes les heures
+//Fonction qui met Ã  jour Ã  jour la base de donnÃ©es principale toutes les heures
 function updateLastData(callback) {
-    console.log('Mise à jour "temps réel"...');
+    console.log('Mise Ã  jour "temps rÃ©el"...');
     var spawn = require("child_process").spawn; //Permet l'usage de fonction externe
     var scriptProcess = spawn('python', ["/home/pi/MeteoStation/MeteoStation/python/capteur.py"]); //Importe le script python
-    scriptProcess.stdout.on('data', function (data) {         //Récupère les données sortantes du script python
-        var newHum = parseFloat(data.slice(0, data.indexOf("S"))); //Sépare l'humidité de la température
-        var newTemp = parseFloat(data.slice(data.indexOf("S") + 1)); //Sépare la température de l'humidité
-        console.log("Dernière mesure temps réel :" + newTemp + "°C " + newHum + "%");
+    scriptProcess.stdout.on('data', function (data) {         //RÃ©cupÃ¨re les donnÃ©es sortantes du script python
+        var newHum = parseFloat(data.slice(0, data.indexOf("S"))); //SÃ©pare l'humiditÃ© de la tempÃ©rature
+        var newTemp = parseFloat(data.slice(data.indexOf("S") + 1)); //SÃ©pare la tempÃ©rature de l'humiditÃ©
+        console.log("DerniÃ¨re mesure temps rÃ©el :" + newTemp + "Â°C " + newHum + "%");
         var sql = "DELETE FROM lastmesure";
         con.query(sql, function (err, result) {
             if (err) throw err;
-            console.log("Number of records deleted: " + result.affectedRows);
+            console.log("Nombre de valeurs supprimÃ©es: " + result.affectedRows);
         });
         var sql = "INSERT INTO lastmesure (temperature, humidity) VALUES (?)";
         var values = [newTemp, newHum];
         con.query(sql, [values], function (err, result) {
             if (err) throw err;
-            console.log("Number of records inserted: " + result.affectedRows);
+            console.log("Nombre de valeurs insÃ©rÃ©es: " + result.affectedRows);
         });
     });
 }
 
-//setInterval(updateAllData, 18000000); //La base de données principale est mise à jour toute les heures (18x10^6 ms soit 1h)
-//setInterval(updateLastData, 300000); //La base de données "en temps réel" est mise à jour toutes les 5 minutes (300000 ms soit 5min)
-setInterval(updateAllData, 180000); //Test la base de données principale est mise à jour toute les 3 minutes (180000 ms soit 1h)
-setInterval(updateLastData, 60000); //La base de données "en temps réel" est mise à jour toutes les minutes (6000 ms soit 5min)
+//setInterval(updateAllData, 18000000); //La base de donnÃ©es principale est mise Ã  jour toute les heures (18x10^6 ms soit 1h)
+//setInterval(updateLastData, 300000); //La base de donnÃ©es "en temps rÃ©el" est mise Ã  jour toutes les 5 minutes (300000 ms soit 5min)
+setInterval(updateAllData, 180000); //Test la base de donnÃ©es principale est mise Ã  jour toute les 3 minutes (180000 ms soit 1h)
+setInterval(updateLastData, 60000); //La base de donnÃ©es "en temps rÃ©el" est mise Ã  jour toutes les minutes (6000 ms soit 5min)
 
 //Configuration de la structure du site
 app.get('/', function (req, res) {
     res.redirect('/dashboard');
 });
 app.get('/dashboard', function (req, res) {
-    getLastData(function (err, lastData) { //L'appel de cette page fera appel à la fonction de récupération de toute la table
+    getLastData(function (err, lastData) { //L'appel de cette page fera appel Ã  la fonction de rÃ©cupÃ©ration de toute la table
         res.render('dashboard', { //Cette page utilise le template dashboard
             'title': 'lastData',  //Nom de la page
-            'result': JSON.stringify(lastData) //Envoi le résultat de la requête à la page
+            'result': JSON.stringify(lastData) //Envoi le rÃ©sultat de la requÃªte Ã  la page
         });
     });
 });
@@ -129,6 +129,6 @@ app.use(function (req, res, next) {
 
 //Lancement du serveur d'un nouveau client
 app.listen(app.get('port'), function () {
-    console.log('Website started on http://localhost:' +
-        app.get('port') + '; press Ctrl-C to terminate.');
+    console.log("Lancement de l'application sur http://localhost:" +
+        app.get('port') + "; faites Ctrl-C pour l'arrÃªter.");
 }); 
