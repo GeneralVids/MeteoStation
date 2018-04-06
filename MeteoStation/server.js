@@ -49,7 +49,7 @@ function updateAllData(callback) {
         var newHum = parseFloat(data.slice(0, data.indexOf("S"))); //Sépare l'humidité de la température
         var newTemp = parseFloat(data.slice(data.indexOf("S") + 1)); //Sépare la température de l'humidité
         console.log("Dernière mesure horaire :" + newTemp + "°C " + newHum + "%");
-        var sql = "INSERT INTO mesures (temperature, humidity) VALUES ?";            //Préparation de la requête MySQL
+        var sql = "INSERT INTO mesures (temperature, humidity) VALUES (?)";            //Préparation de la requête MySQL
         var values = [newTemp, newHum];                             //Préparation des valeurs de la requête MySQL
         con.query(sql, [values], function (err, result) {           //Envoi de la requête
             if (err) throw err;
@@ -83,8 +83,8 @@ function updateLastData(callback) {
 
 //setInterval(updateAllData, 18000000); //La base de données principale est mise à jour toute les heures (18x10^6 ms soit 1h)
 //setInterval(updateLastData, 300000); //La base de données "en temps réel" est mise à jour toutes les 5 minutes (300000 ms soit 5min)
-setInterval(updateAllData, 18000); //Test la base de données principale est mise à jour toute les 3 minutes (180000 ms soit 1h)
-setInterval(updateLastData, 6000); //La base de données "en temps réel" est mise à jour toutes les minutes (6000 ms soit 5min)
+setInterval(updateAllData, 180000); //Test la base de données principale est mise à jour toute les 3 minutes (180000 ms soit 1h)
+setInterval(updateLastData, 60000); //La base de données "en temps réel" est mise à jour toutes les minutes (6000 ms soit 5min)
 
 //Configuration de la structure du site
 app.get('/', function (req, res) {
