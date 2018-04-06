@@ -48,7 +48,7 @@ function updateAllData(callback) {
     scriptProcess.stdout.on('data', function (data) {         //Récupère les données sortantes du script python
         var newHum = parseFloat(data.slice(0, data.indexOf("S"))); //Sépare l'humidité de la température
         var newTemp = parseFloat(data.slice(data.indexOf("S") + 1)); //Sépare la température de l'humidité
-        console.log("Dernière mesure horaire : " + newTemp + "°C " + newHum + "% à " + Date.now());
+        console.log("Dernière mesure horaire : " + newTemp + "°C " + newHum + "%");
         var sql = "INSERT INTO mesures (temperature, humidity) VALUES (?)";            //Préparation de la requête MySQL
         var values = [newTemp, newHum];                             //Préparation des valeurs de la requête MySQL
         con.query(sql, [values], function (err, result) {           //Envoi de la requête
@@ -66,7 +66,7 @@ function updateLastData(callback) {
     scriptProcess.stdout.on('data', function (data) {         //Récupère les données sortantes du script python
         var newHum = parseFloat(data.slice(0, data.indexOf("S"))); //Sépare l'humidité de la température
         var newTemp = parseFloat(data.slice(data.indexOf("S") + 1)); //Sépare la température de l'humidité
-        console.log("Dernière mesure temps réel : " + newTemp + "°C " + newHum + "% à " + Date.now());
+        console.log("Dernière mesure temps réel : " + newTemp + "°C " + newHum + "%");
         var sql = "DELETE FROM lastmesure";
         con.query(sql, function (err, result) {
             if (err) throw err;
